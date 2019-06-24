@@ -283,10 +283,20 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
+"@ngrx/data@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/data/-/data-8.0.1.tgz#071039f4cec5e41853bb5f748f20b8bf27e13b06"
+  integrity sha512-+vXN2czCi8qKNnZvV452TwKYbv5WrC4d5RIR5k5QrkbS8gL6v2hOB9aUo+1jbZ+r4wLxeUtqHzPrBC174PdXJA==
+
 "@ngrx/effects@^8.0.1":
   version "8.0.1"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-8.0.1.tgz#2420e264d96f9fde7fbe594703827f4e44a0b146"
   integrity sha512-f15SjzZ670HdHVpu3byOiP5R6MOxh/DMQgP8PynKtmadmkKkM69imGsp+8qDEQNABw5O8oJGAn8aLm76QGPnjQ==
+
+"@ngrx/entity@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@ngrx/entity/-/entity-8.0.1.tgz#dcf627c7a1807a50efe051226a759629345a7599"
+  integrity sha512-mdsrKHxo/uYP+sIjgIWmVbIKrLpqvcUlUamV+QfMPTxQXN9nmFsvNsemcOHN1fCklaGWzLo0tfoF/NVwdhJb5w==
 
 "@ngrx/store-devtools@^8.0.1":
   version "8.0.1"

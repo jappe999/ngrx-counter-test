@@ -1,11 +1,7 @@
-import { createReducer, on } from "@ngrx/store";
-import { increment, decrement, reset } from "./hero.actions";
+import { createReducer, on } from '@ngrx/store';
+import { addMany } from './hero.actions';
+import IHero from '../interfaces/IHero';
 
-export const initialState = 0;
+export const initialState: IHero[] = [];
 
-export const heroReducer = createReducer(
-  initialState,
-  on(increment, (state, props) => props.hero),
-  on(decrement, (state, props) => props.hero),
-  on(reset, (state, props) => props.hero)
-);
+export const heroReducer = createReducer(initialState, on(addMany, (state, props) => [...state, ...props]));

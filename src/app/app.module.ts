@@ -1,28 +1,28 @@
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { HttpClientModule } from "@angular/common/http";
-import { EntityDataModule } from "@ngrx/data";
-import { BrowserModule } from "@angular/platform-browser";
-import { EffectsModule } from "@ngrx/effects";
-import { StoreModule } from "@ngrx/store";
-import { NgModule } from "@angular/core";
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { HttpClientModule } from '@angular/common/http';
+import { EntityDataModule } from '@ngrx/data';
+import { BrowserModule } from '@angular/platform-browser';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { NgModule } from '@angular/core';
 
-import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
 
-import { entityConfig } from "./ngrx/entity-metadata";
-import { HeroEffects } from "./ngrx/hero.effects";
-import { heroReducer } from "./ngrx/hero.reducer";
-import { HeroComponent } from "./components/hero/hero.component";
-import { HeroesComponent } from "./components/heroes/heroes.component";
+import { entityConfig } from './ngrx/entity-metadata';
+import { HeroEffects } from './ngrx/hero.effects';
+import { heroReducer } from './ngrx/hero.reducer';
+import { HeroesModule } from './heroes/heroes.module';
 
 @NgModule({
-  declarations: [AppComponent, HeroComponent, HeroesComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     EffectsModule.forRoot([HeroEffects]),
     StoreModule.forRoot({ hero: heroReducer }),
+    HeroesModule,
     EntityDataModule.forRoot(entityConfig),
     StoreDevtoolsModule.instrument({
       maxAge: 25 // Retains last 25 states

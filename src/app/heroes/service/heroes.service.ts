@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
-import Hero from '../interfaces/IHero';
+import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory, EntityActionOptions } from '@ngrx/data';
+import IHero from 'src/app/interfaces/IHero';
+import { addMany } from 'src/app/ngrx/hero.actions';
+import { tap, map } from 'rxjs/operators';
 
-const HEROES: Hero[] = [
+const HEROES: IHero[] = [
   { id: 1, name: 'Windstorm' },
   { id: 2, name: 'The Sensational Fighter' },
   { id: 3, name: 'Captain Quill' },
@@ -11,17 +14,17 @@ const HEROES: Hero[] = [
   { id: 6, name: 'The Atom Warrior' }
 ];
 
-@Injectable({
-  providedIn: 'root'
-})
-export class HeroService {
-  static hero = 0;
+@Injectable({ providedIn: 'root' })
+export class HeroesService extends EntityCollectionServiceBase<IHero> {
+  constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
+    super('Hero', serviceElementsFactory);
+  }
 
   /**
    * Get all the heroes from the database
    */
-  getAll(): Observable<Hero[]> {
-    return from([HEROES]);
+  getAll(): Observable<IHero[]> {
+    return from([HEROES]).pipe(tap(heroes => this.dispatch(addMany(HEROES))));
   }
 
   /**
@@ -29,7 +32,7 @@ export class HeroService {
    *
    * @param   {number}  id    Hero id
    */
-  get(id: number): Observable<Hero> | Observable<null> {
+  get(id: number): Observable<IHero | null> {
     const index = HEROES.findIndex(x => x.id === id);
 
     if (index !== -1) {
@@ -44,7 +47,7 @@ export class HeroService {
    *
    * @param   {Hero}   hero  Hero data
    */
-  create(hero: Hero) {
+  create(hero: IHero) {
     HEROES.push(hero);
     HEROES[HEROES.length - 1].id = HEROES.length - 1;
 
@@ -57,10 +60,10 @@ export class HeroService {
    * @param   {number}  id    Hero id
    * @param   {Hero}   hero  Hero data
    */
-  update(id: number, hero: Hero) {
-    const index = HEROES.findIndex(x => x.id === id);
+  update(entity: IHero, options?: EntityActionOptions): Observable<IHero> {
+    const index = HEROES.findIndex(x => x.id === entity.id);
 
-    HEROES[id] = hero;
+    HEROES[entity.id] = entity;
 
     if (index !== -1) {
       return from([HEROES[index]]);
@@ -82,18 +85,5 @@ export class HeroService {
     } else {
       throw from(null);
     }
-  }
-
-  increment() {
-    return from([++HeroService.hero]);
-  }
-
-  decrement() {
-    return from([--HeroService.hero]);
-  }
-
-  reset() {
-    HeroService.hero = 0;
-    return from([0]);
   }
 }
