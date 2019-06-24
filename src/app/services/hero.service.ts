@@ -83,17 +83,4 @@ export class HeroService {
       throw from(null);
     }
   }
-
-  increment() {
-    return from([++HeroService.hero]);
-  }
-
-  decrement() {
-    return from([--HeroService.hero]);
-  }
-
-  reset() {
-    HeroService.hero = 0;
-    return from([0]);
-  }
 }

@@ -8,43 +8,13 @@ import { HeroService } from "../services/hero.service";
 export class HeroEffects {
   constructor(private actions$: Actions, private heroService: HeroService) {}
 
-  incrementHero$ = createEffect(() =>
+  fetchHeroes$ = createEffect(() =>
     this.actions$.pipe(
-      ofType("[Hero Component] Increment"),
+      ofType("[Hero Component] FetchHeroes"),
       mergeMap(() =>
-        this.heroService.increment().pipe(
+        this.heroService.getAll().pipe(
           map((hero) => ({
-            type: "[Hero Component] Increment Success",
-            hero
-          })),
-          catchError(() => EMPTY)
-        )
-      )
-    )
-  );
-
-  decrementHero$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType("[Hero Component] Decrement"),
-      mergeMap(() =>
-        this.heroService.decrement().pipe(
-          map((hero) => ({
-            type: "[Hero Component] Decrement Success",
-            hero
-          })),
-          catchError(() => EMPTY)
-        )
-      )
-    )
-  );
-
-  resetHero$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType("[Hero Component] Reset"),
-      mergeMap(() =>
-        this.heroService.reset().pipe(
-          map((hero) => ({
-            type: "[Hero Component] Reset Success",
+            type: "[Hero Component] FetchHeroes Success",
             hero
           })),
           catchError(() => EMPTY)
