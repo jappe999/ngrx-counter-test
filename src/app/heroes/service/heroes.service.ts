@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { from, Observable } from 'rxjs';
 import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory, EntityActionOptions } from '@ngrx/data';
 import IHero from 'src/app/interfaces/IHero';
-import { addMany } from 'src/app/ngrx/hero.actions';
 import { tap, map } from 'rxjs/operators';
 
 const HEROES: IHero[] = [
@@ -24,7 +23,7 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    * Get all the heroes from the database
    */
   getAll(): Observable<IHero[]> {
-    return from([HEROES]).pipe(tap(heroes => this.dispatch(addMany(HEROES))));
+    return from([HEROES]).pipe(tap(this.addAllToCache.bind(this)));
   }
 
   /**
@@ -36,7 +35,8 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
     const index = HEROES.findIndex(x => x.id === id);
 
     if (index !== -1) {
-      return from([HEROES[index]]);
+      const hero = [HEROES[index]];
+      return from(hero).pipe(tap(this.addOneToCache.bind(this)));
     } else {
       throw from(null);
     }
@@ -48,10 +48,8 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    * @param   {Hero}   hero  Hero data
    */
   create(hero: IHero) {
-    HEROES.push(hero);
-    HEROES[HEROES.length - 1].id = HEROES.length - 1;
-
-    return from([hero]);
+    hero.id = HEROES.length - 1;
+    return from([hero]).pipe(map(this.addOneToCache.bind(this)));
   }
 
   /**
@@ -60,16 +58,8 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    * @param   {number}  id    Hero id
    * @param   {Hero}   hero  Hero data
    */
-  update(entity: IHero, options?: EntityActionOptions): Observable<IHero> {
-    const index = HEROES.findIndex(x => x.id === entity.id);
-
-    HEROES[entity.id] = entity;
-
-    if (index !== -1) {
-      return from([HEROES[index]]);
-    } else {
-      throw from(null);
-    }
+  update(hero: IHero, options?: EntityActionOptions): Observable<IHero> {
+    return from([hero]).pipe(map(this.updateOneInCache.bind(this)));
   }
 
   /**
@@ -81,7 +71,7 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
     const index = HEROES.findIndex(x => x.id === id);
 
     if (index !== -1) {
-      return from([HEROES[index]]);
+      return from([HEROES[index]]).pipe(map(this.removeOneFromCache.bind(this)));
     } else {
       throw from(null);
     }

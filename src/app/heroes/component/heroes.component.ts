@@ -12,10 +12,10 @@ export class HeroesComponent {
   public loading$: Observable<boolean>;
   public heroes$: Observable<IHero[]>;
 
-  constructor(heroesService: HeroesService) {
-    this.heroes$ = heroesService.entities$;
-    this.loading$ = heroesService.loading$;
+  constructor(private heroesService: HeroesService) {
+    this.heroes$ = this.heroesService.entities$;
+    this.loading$ = this.heroesService.loading$;
 
-    heroesService.getAll().subscribe();
+    this.heroesService.getAll().subscribe();
   }
 }

@@ -10,8 +10,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 import { entityConfig } from './ngrx/entity-metadata';
-import { HeroEffects } from './ngrx/hero.effects';
-import { heroReducer } from './ngrx/hero.reducer';
 import { HeroesModule } from './heroes/heroes.module';
 
 @NgModule({
@@ -20,8 +18,8 @@ import { HeroesModule } from './heroes/heroes.module';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    EffectsModule.forRoot([HeroEffects]),
-    StoreModule.forRoot({ hero: heroReducer }),
+    EffectsModule.forRoot([]),
+    StoreModule.forRoot({}),
     HeroesModule,
     EntityDataModule.forRoot(entityConfig),
     StoreDevtoolsModule.instrument({
