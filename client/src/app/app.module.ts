@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,12 +16,13 @@ import { HeroesModule } from './heroes/heroes.module';
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    EffectsModule.forRoot([]),
-    StoreModule.forRoot({}),
+    FormsModule,
     HeroesModule,
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
     EntityDataModule.forRoot(entityConfig),
     StoreDevtoolsModule.instrument({
       maxAge: 25 // Retains last 25 states

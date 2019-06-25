@@ -1,0 +1,50 @@
+h1 {
+  font-weight: bold;
+  user-select: none;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+label {
+  display: block;
+  user-select: none;
+}
+
+input[type='text'],
+select {
+  width: 100%;
+  min-width: 250px;
+  max-width: 320px;
+  border: thin solid lightgray;
+  border-left-width: 5px;
+  padding: 0.5em;
+  margin-bottom: 1em;
+}
+
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 5px solid #42a948; /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* red */
+}
+
+.container {
+  display: flex;
+  flex-direction: row;
+  margin: 0px auto;
+  max-width: 800px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+.col {
+  flex-direction: column;
+  flex-grow: 1;
+}

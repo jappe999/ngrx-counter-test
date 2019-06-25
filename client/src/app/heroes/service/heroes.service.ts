@@ -1,21 +1,13 @@
 import { Injectable } from '@angular/core';
-import { from, Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { EntityCollectionServiceBase, EntityCollectionServiceElementsFactory, EntityActionOptions } from '@ngrx/data';
 import IHero from 'src/app/interfaces/IHero';
-import { tap, map } from 'rxjs/operators';
-
-const HEROES: IHero[] = [
-  { id: 1, name: 'Windstorm' },
-  { id: 2, name: 'The Sensational Fighter' },
-  { id: 3, name: 'Captain Quill' },
-  { id: 4, name: 'The Azure Tiger' },
-  { id: 5, name: 'Uber Cat' },
-  { id: 6, name: 'The Atom Warrior' }
-];
+import { tap, delay, catchError } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({ providedIn: 'root' })
 export class HeroesService extends EntityCollectionServiceBase<IHero> {
-  constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory) {
+  constructor(serviceElementsFactory: EntityCollectionServiceElementsFactory, private http: HttpClient) {
     super('Hero', serviceElementsFactory);
   }
 
@@ -23,7 +15,15 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    * Get all the heroes from the database
    */
   getAll(): Observable<IHero[]> {
-    return from([HEROES]).pipe(tap(this.addAllToCache.bind(this)));
+    this.setLoading(true);
+    return this.http.get<IHero[]>('http://localhost:3000/api/heros').pipe(
+      delay(1000),
+      tap(this.addAllToCache.bind(this)),
+      catchError(error => {
+        this.setLoading(false);
+        return throwError(error);
+      })
+    );
   }
 
   /**
@@ -31,15 +31,16 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    *
    * @param   {number}  id    Hero id
    */
-  get(id: number): Observable<IHero | null> {
-    const index = HEROES.findIndex(x => x.id === id);
-
-    if (index !== -1) {
-      const hero = [HEROES[index]];
-      return from(hero).pipe(tap(this.addOneToCache.bind(this)));
-    } else {
-      throw from(null);
-    }
+  get(id: number): Observable<IHero> {
+    this.setLoading(true);
+    return this.http.get<IHero>(`http://localhost:3000/api/hero/${id}`).pipe(
+      delay(1000),
+      tap(this.addOneToCache.bind(this)),
+      catchError(error => {
+        this.setLoading(false);
+        return throwError(error);
+      })
+    );
   }
 
   /**
@@ -48,8 +49,15 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    * @param   {Hero}   hero  Hero data
    */
   create(hero: IHero) {
-    hero.id = HEROES.length - 1;
-    return from([hero]).pipe(map(this.addOneToCache.bind(this)));
+    this.setLoading(true);
+    return this.http.post<IHero>('http://localhost:3000/api/hero', hero).pipe(
+      delay(1000),
+      tap(this.addOneToCache.bind(this)),
+      catchError(error => {
+        this.setLoading(false);
+        return throwError(error);
+      })
+    );
   }
 
   /**
@@ -59,7 +67,15 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    * @param   {Hero}   hero  Hero data
    */
   update(hero: IHero, options?: EntityActionOptions): Observable<IHero> {
-    return from([hero]).pipe(map(this.updateOneInCache.bind(this)));
+    this.setLoading(true);
+    return this.http.put<IHero>('http://localhost:3000/api/hero', hero).pipe(
+      delay(1000),
+      tap(this.updateOneInCache.bind(this)),
+      catchError(error => {
+        this.setLoading(false);
+        return throwError(error);
+      })
+    );
   }
 
   /**
@@ -67,13 +83,15 @@ export class HeroesService extends EntityCollectionServiceBase<IHero> {
    *
    * @param   {id}  id - The id of the hero to remove
    */
-  remove(id: number) {
-    const index = HEROES.findIndex(x => x.id === id);
-
-    if (index !== -1) {
-      return from([HEROES[index]]).pipe(map(this.removeOneFromCache.bind(this)));
-    } else {
-      throw from(null);
-    }
+  remove(hero: IHero): Observable<void> {
+    this.setLoading(true);
+    return this.http.delete<void>(`http://localhost:3000/api/hero/${hero.id}`).pipe(
+      delay(1000),
+      tap(() => this.removeOneFromCache(hero)),
+      catchError(error => {
+        this.setLoading(false);
+        return throwError(error);
+      })
+    );
   }
 }

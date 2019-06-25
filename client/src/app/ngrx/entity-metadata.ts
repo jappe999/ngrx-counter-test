@@ -1,12 +1,13 @@
-import { EntityMetadataMap } from "@ngrx/data";
+import { EntityMetadataMap } from '@ngrx/data';
 
 const entityMetadata: EntityMetadataMap = {
   Hero: {},
-  Villain: {}
+  Lab: {},
+  Assignment: {}
 };
 
 // because the plural of "hero" is not "heros"
-const pluralNames = { Hero: "Heroes" };
+const pluralNames = { Hero: 'Heroes' };
 
 export const entityConfig = {
   entityMetadata,

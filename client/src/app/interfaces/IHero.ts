@@ -1,5 +1,5 @@
 interface IHero {
-  id: number;
+  id?: number;
   name: string;
 }
 
