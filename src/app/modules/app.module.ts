@@ -13,6 +13,8 @@ import { AppComponent } from "../app.component";
 
 // NgRx
 import { entityConfig } from "../ngrx/entity-metadata";
+import { counterReducer } from "../ngrx/counter.reducer";
+import { CounterEffects } from "../ngrx/counter.effects";
 import { heroReducer } from "../ngrx/hero.reducer";
 import { HeroEffects } from "../ngrx/hero.effects";
 
@@ -29,16 +31,15 @@ import { HeroComponent } from "../components/hero/hero.component";
     HeroesComponent
   ],
   imports: [
-    FormsModule,
-    BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    EffectsModule.forRoot([HeroEffects]),
-    StoreModule.forRoot({ hero: heroReducer }),
+    BrowserModule,
+    FormsModule,
+    EffectsModule.forRoot([HeroEffects, CounterEffects]),
+    StoreModule.forRoot({ hero: heroReducer, counter: counterReducer }),
     EntityDataModule.forRoot(entityConfig),
     StoreDevtoolsModule.instrument({
       maxAge: 25 // Retains last 25 states
-      // logOnly: environment.production // Restrict extension to log-only mode
     })
   ],
   providers: [],

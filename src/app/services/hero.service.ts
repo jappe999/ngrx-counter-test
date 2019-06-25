@@ -3,12 +3,12 @@ import { from, Observable } from "rxjs";
 import IHero from "../interfaces/IHero";
 
 const HEROES: IHero[] = [
-  { id: 1, name: "Windstorm" },
-  { id: 2, name: "The Sensational Fighter" },
-  { id: 3, name: "Captain Quill" },
-  { id: 4, name: "The Azure Tiger" },
-  { id: 5, name: "Uber Cat" },
-  { id: 6, name: "The Atom Warrior" }
+  { id: 1, name: "Windstorm", power: "" },
+  { id: 2, name: "The Sensational Fighter", power: "" },
+  { id: 3, name: "Captain Quill", power: "" },
+  { id: 4, name: "The Azure Tiger", power: "" },
+  { id: 5, name: "Uber Cat", power: "" },
+  { id: 6, name: "The Atom Warrior", power: "" }
 ];
 
 @Injectable({
